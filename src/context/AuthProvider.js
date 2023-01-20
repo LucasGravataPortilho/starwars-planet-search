@@ -4,6 +4,7 @@ import AuthContext from './AuthContext';
 
 function AuthProvider({ children }) {
   const [list, setList] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -11,13 +12,16 @@ function AuthProvider({ children }) {
       const response = await fetch(url);
       const json = await response.json();
       setList(json.results);
+      setFilteredList(json.results);
     };
     fetchAPI();
   }, []);
 
   const contextValue = useMemo(() => ({
     list,
-  }), [list]);
+    filteredList,
+    setFilteredList,
+  }), [list, filteredList, setFilteredList]);
 
   return (
     <AuthContext.Provider value={ contextValue }>

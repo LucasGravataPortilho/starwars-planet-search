@@ -1,15 +1,21 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 
 function Table() {
-  const { list } = useContext(AuthContext);
-  const [filteredList, setFilteredList] = useState([]);
+  const { list, filteredList, setFilteredList } = useContext(AuthContext);
+
+  const options = ['population', 'orbital_period',
+    'diameter', 'rotation_period', 'surface_water'];
 
   const handleFilter = ({ target }) => {
     const { value } = target;
-    const getFiltered = list
-      .filter((planet) => planet.name.toLowerCase().includes(value.toLowerCase()));
-    setFilteredList(getFiltered);
+    if (value === '') {
+      setFilteredList(list);
+    } else {
+      const getFiltered = list
+        .filter((planet) => planet.name.toLowerCase().includes(value.toLowerCase()));
+      setFilteredList(getFiltered);
+    }
   };
 
   return (
@@ -20,6 +26,16 @@ function Table() {
           data-testid="name-filter"
           onChange={ handleFilter }
         />
+      </div>
+      <br />
+      <div>
+        <select
+          data-testid="column-filter"
+        >
+          {options.map((x) => (
+            <option key={ x }>{x}</option>
+          ))}
+        </select>
       </div>
       <table>
         <thead>
