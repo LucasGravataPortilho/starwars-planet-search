@@ -1,10 +1,15 @@
-// iniciando projeto
 import React from 'react';
 import './App.css';
+import Table from './components/Table';
+import AuthProvider from './context/AuthProvider';
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <div>
+      <AuthProvider>
+        <Table />
+      </AuthProvider>
+    </div>
   );
 }
 
