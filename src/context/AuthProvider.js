@@ -5,6 +5,12 @@ import AuthContext from './AuthContext';
 function AuthProvider({ children }) {
   const [list, setList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
+  const [filter, setFilter] = useState({
+    column: 'population',
+    comparison: 'maior que',
+    value: '0',
+  });
+  const [arrFilter, setArrFilter] = useState([]);
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -19,9 +25,15 @@ function AuthProvider({ children }) {
 
   const contextValue = useMemo(() => ({
     list,
+    setList,
     filteredList,
     setFilteredList,
-  }), [list, filteredList, setFilteredList]);
+    filter,
+    setFilter,
+    arrFilter,
+    setArrFilter,
+  }), [list, setList, filteredList,
+    setFilteredList, filter, setFilter, arrFilter, setArrFilter]);
 
   return (
     <AuthContext.Provider value={ contextValue }>

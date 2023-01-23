@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import AuthContext from '../context/AuthContext';
 
 function Table() {
-  const { list, filteredList, setFilteredList } = useContext(AuthContext);
+  const { list, filteredList, setFilteredList, filter,
+    setFilter, arrFilter, setArrFilter } = useContext(AuthContext);
 
   const options = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
+
+  const comparisons = ['maior que', 'menor que', 'igual a'];
 
   const handleFilter = ({ target }) => {
     const { value } = target;
@@ -17,6 +20,97 @@ function Table() {
       setFilteredList(getFiltered);
     }
   };
+
+  const handleChange = ({ target }) => {
+    setFilter({ ...filter, [target.name]: target.value });
+  };
+
+  const handleClick = () => {
+    setArrFilter([...arrFilter, filter]);
+  };
+
+  const filterPopulation = (comparison, value) => {
+    if (comparison === 'maior que') {
+      const filtro = filteredList.filter((x) => Number(x.population) > value);
+      setFilteredList(filtro);
+    } else if (comparison === 'menor que') {
+      const filtro = filteredList.filter((x) => Number(x.population) < value);
+      setFilteredList(filtro);
+    } else if (comparison === 'igual a') {
+      const filtro = filteredList.filter((x) => Number(x.population) === value);
+      setFilteredList(filtro);
+    }
+  };
+
+  const filterOrbital = (comparison, value) => {
+    if (comparison === 'maior que') {
+      const filtro = filteredList.filter((x) => Number(x.orbital_period) > value);
+      setFilteredList(filtro);
+    } else if (comparison === 'menor que') {
+      const filtro = filteredList.filter((x) => Number(x.orbital_period) < value);
+      setFilteredList(filtro);
+    } else if (comparison === 'igual a') {
+      const filtro = filteredList.filter((x) => Number(x.orbital_period) === value);
+      setFilteredList(filtro);
+    }
+  };
+
+  const filterDiameter = (comparison, value) => {
+    if (comparison === 'maior que') {
+      const filtro = filteredList.filter((x) => Number(x.diameter) > value);
+      setFilteredList(filtro);
+    } else if (comparison === 'menor que') {
+      const filtro = filteredList.filter((x) => Number(x.diameter) < value);
+      setFilteredList(filtro);
+    } else if (comparison === 'igual a') {
+      const filtro = filteredList.filter((x) => Number(x.diameter) === value);
+      setFilteredList(filtro);
+    }
+  };
+
+  const filterRotation = (comparison, value) => {
+    if (comparison === 'maior que') {
+      const filtro = filteredList.filter((x) => Number(x.rotation_period) > value);
+      setFilteredList(filtro);
+    } else if (comparison === 'menor que') {
+      const filtro = filteredList.filter((x) => Number(x.rotation_period) < value);
+      setFilteredList(filtro);
+    } else if (comparison === 'igual a') {
+      const filtro = filteredList.filter((x) => Number(x.rotation_period) === value);
+      setFilteredList(filtro);
+    }
+  };
+
+  const filterSurface = (comparison, value) => {
+    if (comparison === 'maior que') {
+      const filtro = filteredList.filter((x) => Number(x.surface_water) > value);
+      setFilteredList(filtro);
+    } else if (comparison === 'menor que') {
+      const filtro = filteredList.filter((x) => Number(x.surface_water) < value);
+      setFilteredList(filtro);
+    } else if (comparison === 'igual a') {
+      const filtro = filteredList.filter((x) => Number(x.surface_water) === value);
+      setFilteredList(filtro);
+    }
+  };
+
+  useEffect(() => {
+    console.log(arrFilter);
+    if (arrFilter.length > 0) {
+      const { column, comparison, value } = arrFilter[arrFilter.length - 1];
+      if (column === 'population') {
+        filterPopulation(comparison, Number(value));
+      } else if (column === 'orbital_period') {
+        filterOrbital(comparison, Number(value));
+      } else if (column === 'diameter') {
+        filterDiameter(comparison, Number(value));
+      } else if (column === 'rotation_period') {
+        filterRotation(comparison, Number(value));
+      } else if (column === 'surface_water') {
+        filterSurface(comparison, Number(value));
+      }
+    }
+  }, [arrFilter]);
 
   return (
     <div>
@@ -31,11 +125,38 @@ function Table() {
       <div>
         <select
           data-testid="column-filter"
+          name="column"
+          value={ filter.column }
+          onChange={ handleChange }
         >
           {options.map((x) => (
             <option key={ x }>{x}</option>
           ))}
         </select>
+        <select
+          data-testid="comparison-filter"
+          name="comparison"
+          value={ filter.comparison }
+          onChange={ handleChange }
+        >
+          {comparisons.map((x) => (
+            <option key={ x }>{x}</option>
+          ))}
+        </select>
+        <input
+          type="number"
+          data-testid="value-filter"
+          name="value"
+          value={ filter.value }
+          onChange={ handleChange }
+        />
+        <button
+          type="button"
+          data-testid="button-filter"
+          onClick={ handleClick }
+        >
+          Filtrar
+        </button>
       </div>
       <table>
         <thead>
