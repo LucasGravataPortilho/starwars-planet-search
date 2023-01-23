@@ -1,14 +1,19 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 
 function Table() {
   const { list, filteredList, setFilteredList, filter,
     setFilter, arrFilter, setArrFilter } = useContext(AuthContext);
 
-  const options = ['population', 'orbital_period',
-    'diameter', 'rotation_period', 'surface_water'];
+  const [selectedColumn, setSelectedColumn] = useState([]);
 
   const comparisons = ['maior que', 'menor que', 'igual a'];
+
+  useEffect(() => {
+    const options = ['population', 'orbital_period',
+      'diameter', 'rotation_period', 'surface_water'];
+    setSelectedColumn(options);
+  }, []);
 
   const handleFilter = ({ target }) => {
     const { value } = target;
@@ -27,6 +32,8 @@ function Table() {
 
   const handleClick = () => {
     setArrFilter([...arrFilter, filter]);
+    const filterSelected = selectedColumn.filter((x) => x !== filter.column);
+    setSelectedColumn(filterSelected);
   };
 
   const filterPopulation = (comparison, value) => {
@@ -129,7 +136,7 @@ function Table() {
           value={ filter.column }
           onChange={ handleChange }
         >
-          {options.map((x) => (
+          {selectedColumn.map((x) => (
             <option key={ x }>{x}</option>
           ))}
         </select>
