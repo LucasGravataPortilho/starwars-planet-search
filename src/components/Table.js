@@ -34,6 +34,7 @@ function Table() {
     setArrFilter([...arrFilter, filter]);
     const filterSelected = selectedColumn.filter((x) => x !== filter.column);
     setSelectedColumn(filterSelected);
+    setFilter({ ...filter, column: selectedColumn[1] });
   };
 
   const filterPopulation = (comparison, value) => {
@@ -102,7 +103,6 @@ function Table() {
   };
 
   useEffect(() => {
-    console.log(arrFilter);
     if (arrFilter.length > 0) {
       const { column, comparison, value } = arrFilter[arrFilter.length - 1];
       if (column === 'population') {
