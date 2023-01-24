@@ -4,9 +4,8 @@ import AuthContext from '../context/AuthContext';
 function Table() {
   const { list, filteredList, setFilteredList, filter,
     setFilter, arrFilter, setArrFilter } = useContext(AuthContext);
-
   const [selectedColumn, setSelectedColumn] = useState([]);
-
+  const [visualFilter, setVisualFilter] = useState([]);
   const comparisons = ['maior que', 'menor que', 'igual a'];
 
   useEffect(() => {
@@ -33,8 +32,25 @@ function Table() {
   const handleClick = () => {
     setArrFilter([...arrFilter, filter]);
     const filterSelected = selectedColumn.filter((x) => x !== filter.column);
+    const visualFiltered = selectedColumn.find((x) => x === filter.column);
     setSelectedColumn(filterSelected);
+    setVisualFilter([...visualFilter, visualFiltered]);
     setFilter({ ...filter, column: selectedColumn[1] });
+  };
+
+  const handleClickX = (column) => {
+    setVisualFilter(visualFilter.filter((x) => !x.includes(column)));
+    setSelectedColumn([...selectedColumn, column]);
+    setArrFilter(arrFilter.filter((x) => !x.column.includes(column)));
+    if (arrFilter.length > 1) {
+      setFilteredList(list);
+    }
+  };
+
+  const handleClickRemoveAll = () => {
+    setSelectedColumn([...selectedColumn, ...visualFilter]);
+    setVisualFilter([]);
+    setArrFilter([]);
   };
 
   const filterPopulation = (comparison, value) => {
@@ -116,6 +132,8 @@ function Table() {
       } else if (column === 'surface_water') {
         filterSurface(comparison, Number(value));
       }
+    } else {
+      setFilteredList(list);
     }
   }, [arrFilter]);
 
@@ -165,6 +183,28 @@ function Table() {
           Filtrar
         </button>
       </div>
+      <div>
+        {
+          visualFilter.map((x, i) => (
+            <div key={ i } data-testid="filter">
+              {x}
+              <button
+                type="button"
+                onClick={ () => handleClickX(x) }
+              >
+                X
+              </button>
+            </div>
+          ))
+        }
+      </div>
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ handleClickRemoveAll }
+      >
+        Remove All Filters
+      </button>
       <table>
         <thead>
           <tr>
