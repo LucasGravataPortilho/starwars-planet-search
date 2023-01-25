@@ -85,7 +85,7 @@ describe('Testes do App', () => {
     const columnSelects2 = screen.getByTestId('column-filter');
     userEvent.selectOptions(columnSelects2, 'population');
     const comparisonSelects2 = screen.getByTestId('comparison-filter');
-    userEvent.selectOptions(comparisonSelects2, 'maior que');
+    userEvent.selectOptions(comparisonSelects2, 'menor que');
     const valueSelects2 = screen.getByTestId('value-filter');
     userEvent.type(valueSelects2, '2000000');
     const button2 = screen.getByTestId('button-filter');
@@ -103,7 +103,7 @@ describe('Testes do App', () => {
     const columnSelects4 = screen.getByTestId('column-filter');
     userEvent.selectOptions(columnSelects4, 'surface_water');
     const comparisonSelects4 = screen.getByTestId('comparison-filter');
-    userEvent.selectOptions(comparisonSelects4, 'maior que');
+    userEvent.selectOptions(comparisonSelects4, 'menor que');
     const valueSelects4 = screen.getByTestId('value-filter');
     userEvent.type(valueSelects4, '10');
     const button4 = screen.getByTestId('button-filter');
@@ -141,7 +141,7 @@ describe('Testes do App', () => {
     const columnSelects2 = screen.getByTestId('column-filter');
     userEvent.selectOptions(columnSelects2, 'population');
     const comparisonSelects2 = screen.getByTestId('comparison-filter');
-    userEvent.selectOptions(comparisonSelects2, 'menor que');
+    userEvent.selectOptions(comparisonSelects2, 'maior que');
     const valueSelects2 = screen.getByTestId('value-filter');
     userEvent.type(valueSelects2, '2000000');
     const button2 = screen.getByTestId('button-filter');
@@ -159,7 +159,7 @@ describe('Testes do App', () => {
     const columnSelects4 = screen.getByTestId('column-filter');
     userEvent.selectOptions(columnSelects4, 'surface_water');
     const comparisonSelects4 = screen.getByTestId('comparison-filter');
-    userEvent.selectOptions(comparisonSelects4, 'menor que');
+    userEvent.selectOptions(comparisonSelects4, 'maior que');
     const valueSelects4 = screen.getByTestId('value-filter');
     userEvent.type(valueSelects4, '10');
     const button4 = screen.getByTestId('button-filter');
@@ -174,9 +174,9 @@ describe('Testes do App', () => {
     const button5 = screen.getByTestId('button-filter');
     userEvent.click(button5);
     
-    const removeButton = screen.getAllByTestId('filter');
-    userEvent.click(removeButton[1]);
+    const removeButton = screen.getAllByText(/x/i);
     expect(removeButton.length).toBe(5)
+    userEvent.click(removeButton[1]);
 
     const removeAllButton = screen.getByTestId('button-remove-filters');
     userEvent.click(removeAllButton);
@@ -231,8 +231,8 @@ describe('Testes do App', () => {
     userEvent.click(button5);
     
     const removeButton = screen.getAllByTestId('filter');
-    userEvent.click(removeButton[1]);
     expect(removeButton.length).toBe(5)
+    userEvent.click(removeButton[4]);
 
     const removeAllButton = screen.getByTestId('button-remove-filters');
     userEvent.click(removeAllButton);

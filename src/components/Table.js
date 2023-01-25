@@ -42,9 +42,7 @@ function Table() {
     setVisualFilter(visualFilter.filter((x) => !x.includes(column)));
     setSelectedColumn([...selectedColumn, column]);
     setArrFilter(arrFilter.filter((x) => !x.column.includes(column)));
-    if (arrFilter.length > 1) {
-      setFilteredList(list);
-    }
+    setFilteredList(list);
   };
 
   const handleClickRemoveAll = () => {
